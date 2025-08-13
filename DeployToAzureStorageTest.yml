@@ -1,0 +1,65 @@
+name: blazorstaticsitetest
+ 
+on:
+  push:
+    branches:
+      - dev
+ 
+env:
+  AZURE_RESOURCE_GROUP: deployblazor
+  BLOB_STORAGE_ACCOUNT_NAME: blazorstaticsitetest
+ 
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    
+    - name: Set up .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.102'
+
+    - name: Build with dotnet
+      run: dotnet build --configuration Release
+
+    - name: dotnet publish
+      run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/blazorapp
+     
+     
+    - name: Publish artifacts
+      uses: actions/upload-artifact@master
+      with:
+        name: blazorStaticSite
+        path: ${{env.DOTNET_ROOT}}/blazorapp
+ 
+  deploy:
+    needs: build
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+ 
+    # Download artifacts
+    - name: Download artifacts
+      uses: actions/download-artifact@master
+      with:
+        name: blazorStaticSite
+ 
+    # Authentication
+    - name: Authenticate with Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS  }}
+ 
+    # Deploy to storage using CLI
+    - name: Deploy to storage using CLI
+      uses: azure/CLI@v1
+      with:
+        azcliversion: latest
+        inlineScript: | 
+          ls
+          # show azure account being used
+          az account show
+          # az storage account upload
+          az storage blob upload-batch --account-name ${{ env.BLOB_STORAGE_ACCOUNT_NAME }} -s wwwroot -d \$web 
