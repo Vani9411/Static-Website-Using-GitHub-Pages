@@ -1,8 +1,5 @@
 
-🌐 Deploy Static Website to GitHub Pages — Full Project Guide
-
-This guide explains how to create, upload, and deploy a static website to GitHub Pages for free.
-We’ll cover everything from project setup to live hosting.
+🌐 
 
 
 ---
@@ -152,6 +149,4 @@ GitHub Pages will automatically redeploy with the new changes.
 
 
 
-This project can be used freely for personal and commercial purposes.
 
---- give me I'm created
