@@ -1,5 +1,5 @@
 
-🌐 
+🌐 STATIC WEBSITE USING GITHUB PAGES
 
 
 ---
@@ -145,6 +145,7 @@ GitHub Pages will automatically redeploy with the new changes.
 
 
 ---
+
 
 
 
